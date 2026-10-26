@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name     ban unwanted expert
-// @version  1
+// @version  1.1
 // @include  https://news.yahoo.co.jp/expert
 // @grant    none
 // ==/UserScript==
