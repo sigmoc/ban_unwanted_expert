@@ -13,7 +13,7 @@ var theAuthor = null; // ↑その著者名
 const strAuthorSelector = "div > span:first-of-type, div.yads_ad_info div > span";
 
 // 右クリックイベントを処理するハンドラ
-theList.addEventListener('contextmenu', function (event) {
+theList.addEventListener('contextmenu', (event) => {
   theTarget = event.target.closest("li");
   if (theTarget) {
     let authorElem = theTarget.querySelector(strAuthorSelector);
@@ -165,7 +165,7 @@ menuDiv.querySelector("#hide-show-all").addEventListener('click', (event) => {
   //console.log(`chosen hide-show-all`);
   if (theTarget.title === "") { // 表示中なら非表示へ
     theList.childNodes.forEach( (item) => {
-      var authorElem = item.querySelector(strAuthorSelector);
+      let authorElem = item.querySelector(strAuthorSelector);
       if (authorElem.innerText === theAuthor) {
         console.log(`hiding: ${theAuthor}`);
         hide1item(item, theAuthor);
@@ -177,7 +177,7 @@ menuDiv.querySelector("#hide-show-all").addEventListener('click', (event) => {
     }
   }else{												// すでに非表示なら復元
     theList.childNodes.forEach( (item) => {
-      var authorElem = item.querySelector(strAuthorSelector);
+      let authorElem = item.querySelector(strAuthorSelector);
       if (authorElem.innerText === theAuthor) {
         console.log(`restoring: ${theAuthor}`);
         restore1item(item);
@@ -191,25 +191,26 @@ menuDiv.querySelector("#hide-show-all").addEventListener('click', (event) => {
   theTarget.scrollIntoView({ behavior: "smooth", block: "nearest" });	// 右クリックした要素が表示範囲に納まるように
 });
 
-	menuDiv.querySelector("#disp-ban-list").addEventListener('click', (event) => {
-    // BANリスト表示
-    console.log(`chosen disp-ban-list`);
-    let strMsg = "";
-    let nLen = 0;
-    unwanted_authors.values().forEach( (name) => {
-    	if (nLen + name.length > 60) {
-        strMsg += "\\\n";
-        nLen = 0;
-      }
-      if (strMsg != "") {
-        strMsg += ",";
-        nLen++;
-      }
-      strMsg += name;
-      nLen += name.length;
-    });
-  	window.alert(`"${strMsg}"`);
+menuDiv.querySelector("#disp-ban-list").addEventListener('click', (event) => {
+  // BANリスト表示
+  console.log(`chosen disp-ban-list`);
+  let strMsg = "";
+  let nLen = 0;
+  unwanted_authors.values().forEach( (name) => {
+    // 60文字を超える場合は改行して表示する
+    if (nLen + name.length > 60) {
+      strMsg += "\\\n";
+      nLen = 0;
+    }
+    if (strMsg != "") {
+      strMsg += ",";
+      nLen++;
+    }
+    strMsg += name;
+    nLen += name.length;
   });
+  window.alert(`"${strMsg}"`);
+});
 
 // 非表示／表示コンテキストメニュー処理
 function handleHiding(hide_or_show, event) {
@@ -217,18 +218,18 @@ function handleHiding(hide_or_show, event) {
 
   if (hide_or_show) {
     menuDiv.querySelector("#hide-show-one").innerText = "この記事を非表示";
-		menuDiv.querySelector("#hide-show-all").innerText = `著者「${theAuthor}」を全て非表示`;
+	menuDiv.querySelector("#hide-show-all").innerText = `著者「${theAuthor}」を全て非表示`;
   }else{
     menuDiv.querySelector("#hide-show-one").innerText = "この記事を表示";
-		menuDiv.querySelector("#hide-show-all").innerText = `著者「${theAuthor}」を全て表示`;
+	menuDiv.querySelector("#hide-show-all").innerText = `著者「${theAuthor}」を全て表示`;
   }
   //マウスポインタの位置を取得してメニューの座標を設定
   menuDiv.style.left = `${event.pageX + 5}px`;
   menuDiv.style.top = `${event.pageY}px`;
   //メニューを表示状態にする
   menuDiv.style.display = 'block';
-
-	// 画面のどこかを左クリックしたらメニューを閉じる
+ 
+  // 画面のどこかを左クリックしたらメニューを閉じる
   document.body.addEventListener('click', (event) => {
     //if (event.button !== 2) { // 右クリック以外
       event.preventDefault(); // デフォルト動作を防ぐ
